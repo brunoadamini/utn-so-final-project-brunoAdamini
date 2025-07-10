@@ -1,22 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Estudiantes</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <h1>Lista de Estudiantes</h1>
-    <button id="loadButton">Cargar Estudiantes</button>
-    <table id="studentsTable">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Nombre</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <script src="script.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Estudiantes</title>
+  <link rel="stylesheet" href="styles_modern.css" />
+</head>
+
+<body>
+  <h1>Lista de Estudiantes</h1>
+  <input type="text" id="nameInput" placeholder="Tu nombre">
+  <button onclick="saludar()">Saludarme</button>
+  <p id="mensajeSaludo"></p>
+
+ 
+  <h2>Agregar Estudiante</h2>
+  <input type="text" id="newStudentName" placeholder="Nombre del estudiante">
+  <button onclick="agregarEstudiante()">Agregar Estudiante</button>
+  <p id="mensajeAgregar"></p>
+
+  <button id="loadButton">Cargar Estudiantes</button>
+  <table id="studentsTable">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script src="script.js"></script>
+  
+    <script>
+    function saludar() {
+      const nombre = document.getElementById('nameInput').value;
+      fetch(`/api/greet?name=${nombre}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('mensajeSaludo').textContent = data.message;
+        });
+    }
+	
+	async function agregarEstudiante() {
+      const nombre = document.getElementById("newStudentName").value;
+      if (!nombre) return alert("Ingrese nombre");
+
+      const res = await fetch("/api/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: nombre })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById("mensajeAgregar").textContent = `Estudiante agregado con ID ${data.id}`;
+        document.getElementById("newStudentName").value = "";
+        document.getElementById("loadButton").click(); // Recarga la tabla
+      } else {
+        document.getElementById("mensajeAgregar").textContent = "Error";
+      }
+    }
+  </script>
+  
+  
+</body>
+
 </html>

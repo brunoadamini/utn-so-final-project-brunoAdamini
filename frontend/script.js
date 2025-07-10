@@ -1,5 +1,5 @@
 document.getElementById("loadButton").addEventListener("click", async () => {
-  const response = await fetch("/api/students");
+  const response = await fetch('/api/students');
   const students = await response.json();
   const tbody = document.querySelector("#studentsTable tbody");
   tbody.innerHTML = "";
