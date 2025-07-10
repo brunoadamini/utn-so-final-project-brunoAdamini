@@ -55,7 +55,7 @@
         const data = await res.json();
         document.getElementById("mensajeAgregar").textContent = `Estudiante agregado con ID ${data.id}`;
         document.getElementById("newStudentName").value = "";
-        document.getElementById("loadButton").click(); // Recarga la tabla
+        document.getElementById("loadButton").click();
       } else {
         document.getElementById("mensajeAgregar").textContent = "Error";
       }
